@@ -198,22 +198,31 @@ document.querySelectorAll('.form-control').forEach(input => {
     });
 });
 
-// Counter Animation for Stats
+// Counter Animation for Stats with Easing
 function animateCounter(element) {
     const target = parseInt(element.getAttribute('data-target'));
-    const duration = 2000; // 2 seconds
-    const increment = target / (duration / 16); // 60fps
-    let current = 0;
+    const duration = 2500; // 2.5 seconds for smoother animation
+    const startTime = performance.now();
     
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target;
-            clearInterval(timer);
+    // Easing function for smooth animation
+    const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+    
+    const updateCounter = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutQuart(progress);
+        const current = Math.floor(easedProgress * target);
+        
+        element.textContent = current;
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
         } else {
-            element.textContent = Math.floor(current);
+            element.textContent = target;
         }
-    }, 16);
+    };
+    
+    requestAnimationFrame(updateCounter);
 }
 
 // Observe stats section for counter animation
@@ -223,13 +232,16 @@ if (statsSection) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const counters = entry.target.querySelectorAll('.stat-counter');
-                counters.forEach(counter => {
-                    animateCounter(counter);
+                // Add slight delay between each counter for cascading effect
+                counters.forEach((counter, index) => {
+                    setTimeout(() => {
+                        animateCounter(counter);
+                    }, index * 100);
                 });
                 statsObserver.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.3 });
     
     statsObserver.observe(statsSection);
 }
