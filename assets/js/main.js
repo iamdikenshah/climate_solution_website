@@ -1,3 +1,7 @@
+// ============================================
+// Climate Solutions - Modern JavaScript 2026
+// ============================================
+
 // Mobile Navigation Toggle
 const navToggle = document.querySelector('.nav-toggle');
 const navMenu = document.querySelector('.nav-menu');
@@ -5,42 +9,47 @@ const navMenu = document.querySelector('.nav-menu');
 if (navToggle) {
     navToggle.addEventListener('click', () => {
         navMenu.classList.toggle('active');
+        // Animate hamburger to X
+        navToggle.classList.toggle('active');
+        document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
     });
 }
 
-// Close mobile menu when clicking on a link
-const navLinks = document.querySelectorAll('.nav-link');
-navLinks.forEach(link => {
+// Close mobile menu on link click
+document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
         navMenu.classList.remove('active');
+        navToggle?.classList.remove('active');
+        document.body.style.overflow = '';
     });
 });
 
-// Active Navigation Link
+// Active Navigation Link Highlight
 const currentPath = window.location.pathname;
-navLinks.forEach(link => {
-    if (link.getAttribute('href') === currentPath || 
-        (currentPath === '/' && link.getAttribute('href') === 'index.html') ||
-        (currentPath.includes(link.getAttribute('href')) && link.getAttribute('href') !== 'index.html')) {
+document.querySelectorAll('.nav-link').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPath ||
+        (currentPath === '/' && href === 'index.html') ||
+        (currentPath.includes(href) && href !== 'index.html' && href !== '../index.html')) {
         link.classList.add('active');
     }
 });
 
-// Sticky Navigation on Scroll
+// Sticky Navigation with smooth glass effect on scroll
 const navbar = document.querySelector('.navbar');
 let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
+
     if (currentScroll > 50) {
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
     }
-    
+
     lastScroll = currentScroll;
-});
+}, { passive: true });
 
 // Smooth Scroll for Anchor Links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -56,55 +65,116 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Intersection Observer for Fade-in Animations
-const observerOptions = {
+// ============================================
+// Scroll Reveal Animation (Modern IntersectionObserver)
+// ============================================
+const revealOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    rootMargin: '0px 0px -60px 0px'
 };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in');
-            observer.unobserve(entry.target);
+            // Stagger animation for grid children
+            const delay = entry.target.dataset.delay || 0;
+            setTimeout(() => {
+                entry.target.classList.add('fade-in');
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, delay * 1000);
+            revealObserver.unobserve(entry.target);
         }
     });
-}, observerOptions);
+}, revealOptions);
 
-// Observe all cards and sections
-document.querySelectorAll('.card, .testimonial, .project-item, .blog-card').forEach(el => {
-    observer.observe(el);
+// Observe all animatable elements
+document.querySelectorAll('.card, .testimonial, .project-item, .blog-card, .stat-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = `opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${(i % 4) * 0.1}s, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${(i % 4) * 0.1}s`;
+    revealObserver.observe(el);
 });
 
+// ============================================
+// Counter Animation with Easing
+// ============================================
+function animateCounter(element) {
+    const target = parseInt(element.getAttribute('data-target'));
+    const duration = 2500;
+    const startTime = performance.now();
+
+    const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+    const updateCounter = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutQuart(progress);
+        const current = Math.floor(easedProgress * target);
+
+        element.textContent = current;
+
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        } else {
+            element.textContent = target;
+        }
+    };
+
+    requestAnimationFrame(updateCounter);
+}
+
+// Observe stats section for counter animation
+const statsSection = document.querySelector('.stats-section');
+if (statsSection) {
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = entry.target.querySelectorAll('.stat-counter');
+                counters.forEach((counter, index) => {
+                    setTimeout(() => {
+                        animateCounter(counter);
+                    }, index * 150);
+                });
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    statsObserver.observe(statsSection);
+}
+
+// ============================================
 // Contact Form Validation
+// ============================================
 const contactForm = document.getElementById('contact-form');
 
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         let isValid = true;
         const formData = {};
-        
+
         // Clear previous errors
         document.querySelectorAll('.form-error').forEach(error => error.remove());
-        
-        // Get form fields
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.style.borderColor = '';
+        });
+
         const name = document.getElementById('name');
         const email = document.getElementById('email');
         const phone = document.getElementById('phone');
         const subject = document.getElementById('subject');
         const message = document.getElementById('message');
-        
-        // Validate name
+
         if (name && name.value.trim() === '') {
             showError(name, 'Name is required');
             isValid = false;
         } else if (name) {
             formData.name = name.value.trim();
         }
-        
-        // Validate email
+
         if (email && email.value.trim() === '') {
             showError(email, 'Email is required');
             isValid = false;
@@ -114,24 +184,21 @@ if (contactForm) {
         } else if (email) {
             formData.email = email.value.trim();
         }
-        
-        // Validate phone (optional but must be valid if provided)
+
         if (phone && phone.value.trim() !== '' && !isValidPhone(phone.value)) {
             showError(phone, 'Please enter a valid phone number');
             isValid = false;
         } else if (phone && phone.value.trim() !== '') {
             formData.phone = phone.value.trim();
         }
-        
-        // Validate subject
+
         if (subject && subject.value.trim() === '') {
             showError(subject, 'Subject is required');
             isValid = false;
         } else if (subject) {
             formData.subject = subject.value.trim();
         }
-        
-        // Validate message
+
         if (message && message.value.trim() === '') {
             showError(message, 'Message is required');
             isValid = false;
@@ -141,9 +208,8 @@ if (contactForm) {
         } else if (message) {
             formData.message = message.value.trim();
         }
-        
+
         if (isValid) {
-            // Show success message
             showSuccessMessage(contactForm);
             contactForm.reset();
         }
@@ -156,98 +222,53 @@ function showError(input, message) {
     error.className = 'form-error';
     error.textContent = message;
     formGroup.appendChild(error);
-    input.style.borderColor = '#ef4444';
+    input.style.borderColor = '#EC2329';
 }
 
 function isValidEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function isValidPhone(phone) {
-    const re = /^[\d\s\-\+\(\)]+$/;
-    return re.test(phone) && phone.replace(/\D/g, '').length >= 10;
+    return /^[\d\s\-\+\(\)]+$/.test(phone) && phone.replace(/\D/g, '').length >= 10;
 }
 
 function showSuccessMessage(form) {
     const successDiv = document.createElement('div');
     successDiv.style.cssText = `
-        background: #10b981;
+        background: linear-gradient(135deg, #3A55A6, #2C4085);
         color: white;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin-top: 1rem;
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        margin-top: 1.25rem;
         text-align: center;
+        font-weight: 500;
+        animation: fadeInUp 0.4s ease;
     `;
     successDiv.textContent = 'Thank you! Your message has been sent successfully. We will get back to you soon.';
     form.appendChild(successDiv);
-    
+
     setTimeout(() => {
-        successDiv.remove();
+        successDiv.style.opacity = '0';
+        successDiv.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => successDiv.remove(), 300);
     }, 5000);
 }
 
 // Remove error styling on input
 document.querySelectorAll('.form-control').forEach(input => {
-    input.addEventListener('input', function() {
+    input.addEventListener('input', function () {
         this.style.borderColor = '';
         const error = this.parentElement.querySelector('.form-error');
-        if (error) {
-            error.remove();
-        }
+        if (error) error.remove();
     });
 });
 
-// Counter Animation for Stats with Easing
-function animateCounter(element) {
-    const target = parseInt(element.getAttribute('data-target'));
-    const duration = 2500; // 2.5 seconds for smoother animation
-    const startTime = performance.now();
-    
-    // Easing function for smooth animation
-    const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
-    
-    const updateCounter = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easedProgress = easeOutQuart(progress);
-        const current = Math.floor(easedProgress * target);
-        
-        element.textContent = current;
-        
-        if (progress < 1) {
-            requestAnimationFrame(updateCounter);
-        } else {
-            element.textContent = target;
-        }
-    };
-    
-    requestAnimationFrame(updateCounter);
-}
-
-// Observe stats section for counter animation
-const statsSection = document.querySelector('.stats-section');
-if (statsSection) {
-    const statsObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counters = entry.target.querySelectorAll('.stat-counter');
-                // Add slight delay between each counter for cascading effect
-                counters.forEach((counter, index) => {
-                    setTimeout(() => {
-                        animateCounter(counter);
-                    }, index * 100);
-                });
-                statsObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.3 });
-    
-    statsObserver.observe(statsSection);
-}
-
-// Initialize on page load
+// ============================================
+// Initialize
+// ============================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Add any initialization code here
-    console.log('Website loaded successfully');
+    // Add smooth loading transition
+    document.body.style.opacity = '1';
+    document.body.style.transition = 'opacity 0.3s ease';
 });
