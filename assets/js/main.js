@@ -145,8 +145,9 @@ if (statsSection) {
 }
 
 // ============================================
-// Contact Form Validation
+// Contact Form Validation & Google Forms Submission
 // ============================================
+let submitted = false;
 const contactForm = document.getElementById('contact-form');
 
 if (contactForm) {
@@ -210,8 +211,30 @@ if (contactForm) {
         }
 
         if (isValid) {
-            showSuccessMessage(contactForm);
-            contactForm.reset();
+            // Disable submit button
+            const submitBtn = document.getElementById('submit-btn');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+            }
+
+            // Submit to Google Form
+            submitted = true;
+            contactForm.submit();
+        }
+    });
+
+    // Handle successful submission
+    contactForm.addEventListener('formSubmitted', () => {
+        showSuccessMessage(contactForm);
+        contactForm.reset();
+        submitted = false;
+        
+        // Re-enable submit button
+        const submitBtn = document.getElementById('submit-btn');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
         }
     });
 }
