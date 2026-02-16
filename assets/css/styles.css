@@ -1,7 +1,6 @@
 /* ============================================
    Climate Solutions - Modern Design System 2026
-   Inspired by Perplexity Brand Guidelines
-   Turquoise #20808D | Orange #B2582D | Off White #FBFAF4
+   Brand Blue #3A55A6 | Action Red #EC2329 | Off White #FBFAF4
    ============================================ */
 
 /* Reset & Base */
@@ -13,14 +12,14 @@
 
 :root {
     /* Brand Color System — Perplexity-Inspired */
-    --primary-color: #20808D;
-    --primary-dark: #114F56;
-    --primary-light: #2CA0AB;
-    --primary-ultra-light: #DEF7F9;
-    --secondary-color: #B2582D;
-    --secondary-dark: #8F4623;
-    --secondary-light: #BF505C;
-    --accent-color: #B2582D;
+    --primary-color: #3A55A6;
+    --primary-dark: #2A3F7A;
+    --primary-light: #4A6BC7;
+    --primary-ultra-light: #E8ECFA;
+    --secondary-color: #EC2329;
+    --secondary-dark: #C01D22;
+    --secondary-light: #FF4A4F;
+    --accent-color: #EC2329;
     --text-dark: #091717;
     --text-medium: #3a4a4a;
     --text-light: #5a6b6b;
@@ -28,18 +27,18 @@
     --bg-white: #ffffff;
     --border-color: #d6e3e0;
 
-    /* Turquoise Scale */
-    --turquoise-100: #DEF7F9;
-    --turquoise-200: #92DCE2;
-    --turquoise-300: #35BDC8;
-    --turquoise-400: #2CA0AB;
-    --turquoise-500: #20808D;
-    --turquoise-600: #1A6872;
-    --turquoise-700: #114F56;
-    --turquoise-800: #0B363C;
+    /* Blue Scale */
+    --blue-100: #E8ECFA;
+    --blue-200: #B8C4F0;
+    --blue-300: #7A8FD6;
+    --blue-400: #4A6BC7;
+    --blue-500: #3A55A6;
+    --blue-600: #2D4385;
+    --blue-700: #2A3F7A;
+    --blue-800: #1A2850;
 
     /* Warm Accents */
-    --orange: #B2582D;
+    --orange: #EC2329;
     --yellow: #9B6C22;
     --olive: #707C36;
     --warm-red: #BF505C;
@@ -63,10 +62,10 @@
     --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(32, 128, 141, 0.06);
-    --shadow-md: 0 4px 12px rgba(32, 128, 141, 0.08);
-    --shadow-lg: 0 12px 24px rgba(32, 128, 141, 0.1);
-    --shadow-xl: 0 24px 48px rgba(32, 128, 141, 0.12);
+    --shadow-sm: 0 1px 3px rgba(58, 85, 166, 0.06);
+    --shadow-md: 0 4px 12px rgba(58, 85, 166, 0.08);
+    --shadow-lg: 0 12px 24px rgba(58, 85, 166, 0.1);
+    --shadow-xl: 0 24px 48px rgba(58, 85, 166, 0.12);
 
     /* Radius */
     --radius-sm: 0.5rem;
@@ -138,10 +137,10 @@ img {
    Navigation - Glassmorphism
    ============================================ */
 .navbar {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(32, 128, 141, 0.08);
+    border-bottom: 1px solid rgba(58, 85, 166, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -149,8 +148,8 @@ img {
 }
 
 .navbar.scrolled {
-    background: rgba(255, 255, 255, 0.97);
-    box-shadow: 0 4px 20px rgba(32, 128, 141, 0.1);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 20px rgba(58, 85, 166, 0.15);
 }
 
 .nav-container {
@@ -172,6 +171,7 @@ img {
 
 .logo img {
     transition: transform var(--transition-normal);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .logo:hover img {
@@ -229,13 +229,14 @@ img {
     transition: all var(--transition-normal);
     text-decoration: none;
     white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(32, 128, 141, 0.2);
+    box-shadow: 0 2px 8px rgba(58, 85, 166, 0.25);
 }
 
 .nav-cta:hover {
-    background: transparent;
-    color: var(--primary-color);
-    box-shadow: none;
+    background: var(--primary-dark);
+    color: #ffffff;
+    border-color: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(58, 85, 166, 0.35);
     transform: translateY(-1px);
 }
 
@@ -251,7 +252,7 @@ img {
    Hero Section — Homepage
    ============================================ */
 .hero {
-    background: linear-gradient(135deg, #091717 0%, var(--primary-dark) 40%, var(--primary-color) 70%, #091717 100%);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 40%, var(--primary-light) 70%, var(--primary-color) 100%);
     background-size: 300% 300%;
     animation: heroGradient 12s ease infinite;
     color: white;
@@ -276,8 +277,8 @@ img {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 600px 600px at 15% 30%, rgba(178, 88, 45, 0.15) 0%, transparent 70%),
-        radial-gradient(ellipse 500px 500px at 85% 70%, rgba(32, 128, 141, 0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 600px at 15% 30%, rgba(236, 35, 41, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 85% 70%, rgba(58, 85, 166, 0.25) 0%, transparent 60%),
         radial-gradient(ellipse 300px 300px at 50% 10%, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
     pointer-events: none;
     z-index: 1;
@@ -363,15 +364,15 @@ img {
 }
 
 @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(178, 88, 45, 0.5); }
-    50% { box-shadow: 0 0 0 8px rgba(178, 88, 45, 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(236, 35, 41, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(236, 35, 41, 0); }
 }
 
 /* ============================================
    Sub-Page Hero / Page Header
    ============================================ */
 .page-header {
-    background: linear-gradient(160deg, #091717 0%, var(--primary-dark) 50%, var(--primary-color) 100%);
+    background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary-color) 50%, var(--primary-light) 100%);
     background-size: 200% 200%;
     animation: heroGradient 10s ease infinite;
     color: white;
@@ -400,7 +401,7 @@ img {
     position: absolute;
     width: 300px;
     height: 300px;
-    border: 2px solid rgba(178, 88, 45, 0.08);
+    border: 2px solid rgba(236, 35, 41, 0.08);
     border-radius: 50%;
     bottom: -120px;
     left: -80px;
@@ -489,13 +490,13 @@ img {
 .btn-primary {
     background: var(--primary-color);
     color: white;
-    box-shadow: 0 2px 8px rgba(32, 128, 141, 0.3);
+    box-shadow: 0 2px 8px rgba(58, 85, 166, 0.3);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(32, 128, 141, 0.35);
+    box-shadow: 0 6px 20px rgba(58, 85, 166, 0.35);
     color: white;
 }
 
@@ -515,13 +516,13 @@ img {
 .btn-accent {
     background: var(--secondary-color);
     color: white;
-    box-shadow: 0 2px 8px rgba(178, 88, 45, 0.3);
+    box-shadow: 0 2px 8px rgba(236, 35, 41, 0.3);
 }
 
 .btn-accent:hover {
     background: var(--secondary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(178, 88, 45, 0.35);
+    box-shadow: 0 6px 20px rgba(236, 35, 41, 0.35);
     color: white;
 }
 
@@ -535,7 +536,7 @@ img {
     background: var(--primary-color);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(32, 128, 141, 0.25);
+    box-shadow: 0 6px 20px rgba(58, 85, 166, 0.25);
 }
 
 /* ============================================
@@ -610,7 +611,7 @@ img {
     padding: var(--spacing-md);
     box-shadow: var(--shadow-md);
     transition: all var(--transition-normal);
-    border: 1px solid rgba(32, 128, 141, 0.06);
+    border: 1px solid rgba(58, 85, 166, 0.06);
     position: relative;
     overflow: hidden;
 }
@@ -697,7 +698,7 @@ img {
     font-size: 1.5rem;
     color: white;
     margin-bottom: var(--spacing-sm);
-    box-shadow: 0 4px 12px rgba(32, 128, 141, 0.2);
+    box-shadow: 0 4px 12px rgba(58, 85, 166, 0.2);
 }
 
 .card h3 {
@@ -776,7 +777,7 @@ img {
    CTA Banner
    ============================================ */
 .cta-banner {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 60%, #0B363C 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 60%, var(--primary-dark) 100%);
     color: white;
     text-align: center;
     padding: var(--spacing-lg) var(--spacing-md);
@@ -793,7 +794,7 @@ img {
     right: -20%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(178, 88, 45, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(236, 35, 41, 0.15) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -814,7 +815,7 @@ img {
    Footer - Deep Brand Blue, Professional
    ============================================ */
 .footer {
-    background: linear-gradient(180deg, #0B363C 0%, #091717 100%);
+    background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: rgba(255, 255, 255, 0.85);
     padding: var(--spacing-lg) 0 var(--spacing-md);
     font-family: var(--font-primary);
@@ -855,6 +856,13 @@ img {
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.9375rem;
     line-height: 1.7;
+}
+
+.footer-section img {
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .footer-section ul {
@@ -916,7 +924,7 @@ img {
 .form-control:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(32, 128, 141, 0.12);
+    box-shadow: 0 0 0 3px rgba(58, 85, 166, 0.12);
 }
 
 .form-control::placeholder {
@@ -989,7 +997,7 @@ textarea.form-control {
     overflow: hidden;
     box-shadow: var(--shadow-md);
     transition: all var(--transition-normal);
-    border: 1px solid rgba(32, 128, 141, 0.06);
+    border: 1px solid rgba(58, 85, 166, 0.06);
 }
 
 .blog-card:hover {
@@ -1060,7 +1068,7 @@ textarea.form-control {
     color: white;
     font-size: 1.25rem;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(32, 128, 141, 0.2);
+    box-shadow: 0 4px 12px rgba(58, 85, 166, 0.2);
 }
 
 .contact-details h4 {
@@ -1115,7 +1123,7 @@ textarea.form-control {
     background: var(--primary-color);
     border-color: var(--primary-color);
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(32, 128, 141, 0.3);
+    box-shadow: 0 4px 12px rgba(58, 85, 166, 0.3);
 }
 
 /* ============================================
@@ -1139,7 +1147,7 @@ textarea.form-control {
 .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(32, 128, 141, 0.1);
+    border-color: rgba(58, 85, 166, 0.1);
 }
 
 /* ============================================
@@ -1273,6 +1281,6 @@ textarea.form-control {
 ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
 
 ::selection {
-    background: rgba(32, 128, 141, 0.2);
+    background: rgba(58, 85, 166, 0.2);
     color: var(--text-dark);
 }
